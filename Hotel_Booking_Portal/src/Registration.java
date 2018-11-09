@@ -12,14 +12,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.Box;
+import javax.swing.JPasswordField;
 
 public class Registration extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField User_Check;
 	private JLabel lblNewLabel;
-	private JTextField textField;
 	private JTextField textField_1;
+	private JPasswordField password_check;
 
 	/**
 	 * Launch the application.
@@ -41,6 +42,7 @@ public class Registration extends JFrame {
 	 * Create the frame.
 	 */
 	public Registration() {
+		setTitle("Login Window");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 396, 300);
 		contentPane = new JPanel();
@@ -62,11 +64,6 @@ public class Registration extends JFrame {
 		lblNewLabel.setFont(new Font("Montserrat", Font.PLAIN, 18));
 		lblNewLabel.setBounds(50, 147, 127, 23);
 		contentPane.add(lblNewLabel);
-		
-		textField = new JTextField();
-		textField.setBounds(200, 150, 114, 23);
-		contentPane.add(textField);
-		textField.setColumns(10);
 		
 		JButton btnSignIn = new JButton("Sign in");
 		btnSignIn.setFont(new Font("Montserrat", Font.PLAIN, 14));
@@ -91,5 +88,9 @@ public class Registration extends JFrame {
 		lblLoginPage.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblLoginPage.setBounds(35, 23, 161, 29);
 		contentPane.add(lblLoginPage);
+		
+		password_check = new JPasswordField();
+		password_check.setBounds(201, 151, 113, 20);
+		contentPane.add(password_check);
 	}
 }
