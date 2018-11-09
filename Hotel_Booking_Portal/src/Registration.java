@@ -89,7 +89,7 @@ public class Registration extends JFrame {
 		
 		JLabel lblLoginPage = new JLabel("Login Page");
 		lblLoginPage.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblLoginPage.setBounds(35, 23, 155, 29);
+		lblLoginPage.setBounds(35, 23, 161, 29);
 		contentPane.add(lblLoginPage);
 	}
 }
