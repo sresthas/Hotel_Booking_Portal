@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+
 import java.awt.Window.Type;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -22,6 +24,9 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.DateModel;
 import java.util.Properties;
@@ -32,6 +37,8 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Regis extends JFrame {
 
@@ -61,7 +68,9 @@ public class Regis extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	Connection connection=null;
 	public Regis() {
+		connection=sqliteConnection.dbConnector();
 		setFont(new Font("Bauhaus 93", Font.PLAIN, 17));
 		setType(Type.POPUP);
 		setTitle("Registration Window");
@@ -117,6 +126,10 @@ public class Regis extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		textField_3 = new JTextField();
+		textField_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		textField_3.setBounds(357, 259, 179, 20);
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
@@ -136,11 +149,40 @@ public class Regis extends JFrame {
 		contentPane.add(chckbxIAgreeTo);
 		
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String query="insert into user_data (username,password) values (?,?)";
+					PreparedStatement pst=connection.prepareStatement(query);
+					pst.setString(1,textField_3.getText());
+					pst.setString(2,passwordField.getText());
+					pst.execute();
+					JOptionPane.showMessageDialog(null,"DataSaved");
+					pst.close();
+					
+					
+				}
+				catch(Exception en)
+				{
+					en.printStackTrace();
+				}
+				
+			}
+		});
 		btnLogin.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnLogin.setBounds(199, 404, 89, 23);
 		contentPane.add(btnLogin);
 		
 		JButton btnCancel = new JButton("Cancel");
+		//Regis xy=new Regis();
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				System.exit(0);
+				
+			}
+		});
+		//xy.add(btnCancel);
 		btnCancel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnCancel.setBounds(447, 404, 89, 23);
 		contentPane.add(btnCancel);
