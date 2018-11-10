@@ -3,25 +3,17 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
+
 import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.Box;
-import javax.swing.JPasswordField;
 
 public class Registration extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField User_Check;
 	private JLabel lblNewLabel;
-	private JTextField textField_1;
 	private JPasswordField password_check;
 
 	/**
@@ -60,6 +52,10 @@ public class Registration extends JFrame {
 		contentPane.add(lblUsername);
 		
 		User_Check = new JTextField();
+		User_Check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		User_Check.setBounds(200, 90, 114, 23);
 		contentPane.add(User_Check);
 		User_Check.setColumns(10);
@@ -69,24 +65,19 @@ public class Registration extends JFrame {
 		lblNewLabel.setBounds(50, 147, 127, 23);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnSignIn = new JButton("Sign in");
-		btnSignIn.setFont(new Font("Montserrat", Font.PLAIN, 14));
-		btnSignIn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSignIn.setBounds(59, 206, 89, 23);
-		contentPane.add(btnSignIn);
+		
+		
 		
 		JButton btnSignUp = new JButton("Sign Up");
+		btnSignUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Regis reg=new Regis();
+				reg.setVisible(true);
+			}
+		});
 		btnSignUp.setFont(new Font("Montserrat", Font.PLAIN, 14));
 		btnSignUp.setBounds(200, 206, 89, 23);
 		contentPane.add(btnSignUp);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(62, 208, 86, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
 		
 		JLabel lblLoginPage = new JLabel("Login Page");
 		lblLoginPage.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -94,7 +85,50 @@ public class Registration extends JFrame {
 		contentPane.add(lblLoginPage);
 		
 		password_check = new JPasswordField();
+		password_check.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		password_check.setBounds(201, 151, 113, 20);
 		contentPane.add(password_check);
+		JButton btnSignIn = new JButton("Sign in");
+		btnSignIn.setFont(new Font("Montserrat", Font.PLAIN, 14));
+		btnSignIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String query="select * from user_data where username=? and password=?";
+					PreparedStatement pst=connection.prepareStatement(query);
+					pst.setString(1, User_Check.getText());
+					pst.setString(2, password_check.getText());
+					ResultSet rs=pst.executeQuery();
+					int count=0;
+					while(rs.next())
+					{
+						count=count+1;
+						
+					}
+					if(count==1)
+					{
+						JOptionPane.showMessageDialog(null, "Username and password is correct");
+						
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Username and password is incorrect. Please signup");
+						
+						
+					}
+					rs.close();
+					pst.close();
+				}
+				catch(Exception en)
+				{
+					JOptionPane.showMessageDialog(null,en);
+				}
+				
+			}
+		});
+		btnSignIn.setBounds(59, 206, 89, 23);
+		contentPane.add(btnSignIn);
 	}
 }
