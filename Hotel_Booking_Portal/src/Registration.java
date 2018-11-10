@@ -1,3 +1,5 @@
+import java.sql.*;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -41,7 +43,9 @@ public class Registration extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	Connection connection=null;
 	public Registration() {
+		connection=sqliteConnection.dbConnector();
 		setTitle("Login Window");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 396, 300);
