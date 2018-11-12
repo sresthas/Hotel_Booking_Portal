@@ -87,9 +87,15 @@ public class Regis extends JFrame {
 		contentPane.add(lblName);
 		
 		textField = new JTextField();
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		textField.setBounds(357, 81, 179, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
 		
 		JLabel lblDateOfBirth = new JLabel("Date of Birth:");
 		lblDateOfBirth.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -116,6 +122,10 @@ public class Regis extends JFrame {
 		contentPane.add(lblEmailId);
 		
 		textField_2 = new JTextField();
+		textField_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		textField_2.setBounds(357, 215, 179, 20);
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
@@ -140,6 +150,10 @@ public class Regis extends JFrame {
 		contentPane.add(lblPassword);
 		
 		passwordField = new JPasswordField();
+		passwordField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		passwordField.setBounds(357, 307, 179, 20);
 		contentPane.add(passwordField);
 		
@@ -147,11 +161,38 @@ public class Regis extends JFrame {
 		chckbxIAgreeTo.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		chckbxIAgreeTo.setBounds(166, 351, 370, 23);
 		contentPane.add(chckbxIAgreeTo);
+		if(!chckbxIAgreeTo.getState())
+		{
+			JOptionPane.showMessageDialog(null,"Tick the checkbox");
+			
+		}
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					if(textField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null,"Enter name");
+						btnLogin.setEnabled(false);
+				    }
+					
+					if(textField_2.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null,"Enter email id");
+						btnLogin.setEnabled(false);
+				    }
+					if(textField_3.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null,"Enter username");
+						btnLogin.setEnabled(false);
+				    }
+					if(passwordField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null,"Enter password");
+						btnLogin.setEnabled(false);
+				    }
+					if(!chckbxIAgreeTo.getState())
+					{
+						JOptionPane.showMessageDialog(null,"Tick the checkbox");
+						btnLogin.setEnabled(false);
+					}
 					String query="insert into user_data (username,password) values (?,?)";
 					PreparedStatement pst=connection.prepareStatement(query);
 					pst.setString(1,textField_3.getText());
