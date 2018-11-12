@@ -161,11 +161,6 @@ public class Regis extends JFrame {
 		chckbxIAgreeTo.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		chckbxIAgreeTo.setBounds(166, 351, 370, 23);
 		contentPane.add(chckbxIAgreeTo);
-		if(!chckbxIAgreeTo.getState())
-		{
-			JOptionPane.showMessageDialog(null,"Tick the checkbox");
-			
-		}
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
