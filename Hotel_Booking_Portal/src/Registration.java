@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class Registration extends JFrame {
 
@@ -37,11 +39,14 @@ public class Registration extends JFrame {
 	 */
 	Connection connection=null;
 	public Registration() {
+		setForeground(Color.CYAN);
 		connection=sqliteConnection.dbConnector();
 		setTitle("Login Window");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 396, 300);
 		contentPane = new JPanel();
+		contentPane.setForeground(SystemColor.activeCaption);
+		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -55,7 +60,10 @@ public class Registration extends JFrame {
 		User_Check.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
+		
 		});
+		
+		
 		User_Check.setBounds(200, 90, 114, 23);
 		contentPane.add(User_Check);
 		User_Check.setColumns(10);
@@ -95,7 +103,15 @@ public class Registration extends JFrame {
 		btnSignIn.setFont(new Font("Montserrat", Font.PLAIN, 14));
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
+				try {int check=0;
+					if(User_Check.getText().trim().isEmpty()||password_check.getText().trim().isEmpty())
+					{
+						JOptionPane.showMessageDialog(null,"Entries cant be empty");
+						//btnNewButton.setEnabled(b);
+						check=1;
+					}
+					if(check==0)
+					{
 					String query="select * from user_data where username=? and password=?";
 					PreparedStatement pst=connection.prepareStatement(query);
 					pst.setString(1, User_Check.getText());
@@ -108,11 +124,40 @@ public class Registration extends JFrame {
 						
 					}
 					if(count==1)
-					{
-						JOptionPane.showMessageDialog(null, "Username and password is correct");
-						
+					{	String person=User_Check.getText();
+						//JOptionPane.showMessageDialog(null,person);
+						String sql = "SELECT numberofrooms FROM user_data WHERE username='"+person+"'";
+						try {
+							PreparedStatement pstmt = connection.prepareStatement(sql);
+							int flag=0;
+							ResultSet rs1  = pstmt.executeQuery();
+							//JOptionPane.showMessageDialog(null, "Yas");
+							//JOptionPane.showMessageDialog(null, rs1.getInt("numberofrooms"));
+							//System.out.println(rs1.getInt("numberofrooms"));
+							if(rs1.getInt("numberofrooms")>=1)
+							{
+								Modify m=new Modify(User_Check.getText(),password_check.getText());
+								m.setVisible(true);
+							}
+							else
+							{
+							Hotel_Checker hc=new Hotel_Checker(User_Check.getText());
+							hc.setVisible(true);
+							}	
+							
+								
+							
+							
+						}
+						catch (Exception en) {
+							en.printStackTrace();
 					}
-					else
+						
+						//JOptionPane.showMessageDialog(null, "Username and password is correct");
+						//Hotel_Checker hc=new Hotel_Checker(User_Check.getText(),password_check.getText());
+						//hc.setVisible(true);
+					}
+					if(count!=1)
 					{
 						JOptionPane.showMessageDialog(null, "Username and password is incorrect. Please signup");
 						
@@ -120,15 +165,19 @@ public class Registration extends JFrame {
 					}
 					rs.close();
 					pst.close();
+					connection.close();
+					}
 				}
+					
 				catch(Exception en)
 				{
 					JOptionPane.showMessageDialog(null,en);
 				}
 				
 			}
-		});
+			});
 		btnSignIn.setBounds(59, 206, 89, 23);
 		contentPane.add(btnSignIn);
+		
 	}
 }

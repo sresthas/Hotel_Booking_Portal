@@ -1,3 +1,4 @@
+//Registration page
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -18,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.JSlider;
 import java.awt.List;
+import java.awt.SystemColor;
+
 import javax.swing.JList;
 import javax.swing.JSeparator;
 import javax.swing.JPopupMenu;
@@ -26,13 +29,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.DateModel;
+
+import java.util.Date;
 import java.util.Properties;
 import org.jdatepicker.impl.JDatePickerImpl;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import org.jdatepicker.impl.DateComponentFormatter;
+
+import com.sun.jmx.snmp.Timestamp;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -48,7 +56,9 @@ public class Regis extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JPasswordField passwordField;
-
+	/*final JButton btnLogin;
+	final JCheckBox chckbxIAgreeTo;*/
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Launch the application.
 	 */
@@ -70,6 +80,9 @@ public class Regis extends JFrame {
 	 */
 	Connection connection=null;
 	public Regis() {
+		
+	//	JButton btnNewButton= new JButton("Login");
+		
 		connection=sqliteConnection.dbConnector();
 		setFont(new Font("Bauhaus 93", Font.PLAIN, 17));
 		setType(Type.POPUP);
@@ -80,6 +93,7 @@ public class Regis extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(SystemColor.activeCaption);
 		
 		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -89,6 +103,12 @@ public class Regis extends JFrame {
 		textField = new JTextField();
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				/*if(textField.getText().trim().length()==0)
+				{
+					JOptionPane.showMessageDialog(null,"Empty");
+				//	btnNewButton.setEnabled(false);
+				}*/
+					
 				
 			}
 		});
@@ -102,7 +122,7 @@ public class Regis extends JFrame {
 		lblDateOfBirth.setBounds(166, 128, 122, 14);
 		contentPane.add(lblDateOfBirth);
 		
-		JDateChooser dateChooser = new JDateChooser();
+		final JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setBounds(357, 128, 179, 20);
 		contentPane.add(dateChooser);
 		
@@ -143,10 +163,12 @@ public class Regis extends JFrame {
 		textField_3.setBounds(357, 259, 179, 20);
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
+		//String x=textField_3.getText();
+		
 		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		lblPassword.setBounds(166, 307, 161, 14);
+		lblPassword.setBounds(166, 308, 161, 14);
 		contentPane.add(lblPassword);
 		
 		passwordField = new JPasswordField();
@@ -156,58 +178,12 @@ public class Regis extends JFrame {
 		});
 		passwordField.setBounds(357, 307, 179, 20);
 		contentPane.add(passwordField);
+		//String y=passwordField.getText();
 		
-		JCheckBox chckbxIAgreeTo = new JCheckBox("I agree to the terms and conditions");
+		 /*chckbxIAgreeTo = new JCheckBox("I agree to the terms and conditions");
 		chckbxIAgreeTo.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		chckbxIAgreeTo.setBounds(166, 351, 370, 23);
-		contentPane.add(chckbxIAgreeTo);
-		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if(textField.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(null,"Enter name");
-						btnLogin.setEnabled(false);
-				    }
-					
-					if(textField_2.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(null,"Enter email id");
-						btnLogin.setEnabled(false);
-				    }
-					if(textField_3.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(null,"Enter username");
-						btnLogin.setEnabled(false);
-				    }
-					if(passwordField.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(null,"Enter password");
-						btnLogin.setEnabled(false);
-				    }
-					if(!chckbxIAgreeTo.getState())
-					{
-						JOptionPane.showMessageDialog(null,"Tick the checkbox");
-						btnLogin.setEnabled(false);
-					}
-					String query="insert into user_data (username,password) values (?,?)";
-					PreparedStatement pst=connection.prepareStatement(query);
-					pst.setString(1,textField_3.getText());
-					pst.setString(2,passwordField.getText());
-					pst.execute();
-					JOptionPane.showMessageDialog(null,"DataSaved");
-					pst.close();
-					
-					
-				}
-				catch(Exception en)
-				{
-					en.printStackTrace();
-				}
-				
-			}
-		});
-		btnLogin.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		btnLogin.setBounds(199, 404, 89, 23);
-		contentPane.add(btnLogin);
+		contentPane.add(chckbxIAgreeTo);*/
 		
 		JButton btnCancel = new JButton("Cancel");
 		//Regis xy=new Regis();
@@ -222,7 +198,58 @@ public class Regis extends JFrame {
 		btnCancel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnCancel.setBounds(447, 404, 89, 23);
 		contentPane.add(btnCancel);
+		
+		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					SimpleDateFormat format1=new SimpleDateFormat("dd/MM/yyyy");
+					Date d;
+					d=format1.parse(format1.format(dateChooser.getDate()));
+					Timestamp ts=new Timestamp(System.currentTimeMillis());  
+					Date date2=ts.getDate(); 
+					long x=d.getTime()/(60*60*1000*24);
+					
+					//System.out.println(x);   
+					long y=date2.getTime()/(60*60*1000*24);
+					//System.out.println(y);  
+					long temp=y-x;
+					//System.out.println(temp);
+					if(textField.getText().trim().isEmpty()||dateChooser.getDate()==null ||textField_1.getText().trim().isEmpty()||textField_2.getText().isEmpty()||textField_3.getText().isEmpty()||passwordField.getText().isEmpty())
+					{
+						JOptionPane.showMessageDialog(null,"Entries cant be empty");
+						//btnNewButton.setEnabled(b);
+					}
+					else if(temp<6570){
+						JOptionPane.showMessageDialog(null,"Below 18!!!!");
+					}
+					else {
+					String query="insert into user_data (username,password) values (?,?)";
+					PreparedStatement pst=connection.prepareStatement(query);
+					pst.setString(1,textField_3.getText());
+					pst.setString(2,passwordField.getText());
+					//pst.setString(3,"0");
+					pst.execute();
+					JOptionPane.showMessageDialog(null,"DataSaved");
+					pst.close();
+					int flag=0;
+					Hotel_Checker hc=new Hotel_Checker(textField_3.getText());
+					hc.setVisible(true);
+					}
+					
+				}
+				catch(Exception end)
+				{
+					JOptionPane.showMessageDialog(null,"Username already exists.Try another!!");
+				}
+				
+			
+			}
+		});
+		btnNewButton.setBounds(191, 405, 89, 23);
+		contentPane.add(btnNewButton);
 	}
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -240,4 +267,5 @@ public class Regis extends JFrame {
 			}
 		});
 	}
+	
 }
